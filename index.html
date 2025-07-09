@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>VELLARO T-Shirt Billing Bot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- html2canvas for screenshot -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+    body {
+      background: #f4f4f9;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 30px 0;
+      letter-spacing: 2px;
+    }
+
+    .section {
+      background: #fff;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    #billOutput {
+      border: 2px solid #333;
+      padding: 20px;
+      border-radius: 8px;
+      background: #fff;
+      width: 100%;
+      max-width: 400px;
+      /* ✅ Mobile-friendly width */
+      margin: auto;
+      box-sizing: border-box;
+    }
+
+    .brand-header {
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.3rem;
+      /* smaller for phones */
+      margin-bottom: 5px;
+    }
+
+    .brand-sub {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    .thank-you {
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px dashed #aaa;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .totals,
+    .total-amount {
+      text-align: end;
+    }
+
+    .total-amount {
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    table th,
+    table td {
+      vertical-align: middle !important;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+
+      #billOutput,
+      #billOutput * {
+        visibility: visible;
+      }
+
+      #billOutput {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>VELLARO T-Shirt Billing Bot</h1>
+
+    <div class="section">
+      <h2>Add T-Shirt</h2>
+      <div class="mb-3">
+        <label for="tshirtName" class="form-label">T-shirt Name:</label>
+        <select class="form-select" id="tshirtName">
+          <option value="Vellaro T shirt">Vellaro T shirt (Rs.1199)</option>
+          <option value="Vellaro Back print">Vellaro Back print (Rs.1699)</option>
+          <option value="Vellaro POLO">Vellaro POLO (Rs.1499)</option>
+          <option value="Vellaro Crop Top">Vellaro Crop Top (Rs.1099)</option>
+          <option value="Brink T shirt">Brink T shirt (Rs.899)</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label for="tshirtSize" class="form-label">Size:</label>
+          <select class="form-select" id="tshirtSize">
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+            <option value="XXL">XXL</option>
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="tshirtColor" class="form-label">Color:</label>
+          <input type="text" id="tshirtColor" placeholder="e.g., Black" class="form-control">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="tshirtQty" class="form-label">Quantity:</label>
+          <input type="number" id="tshirtQty" value="1" min="1" class="form-control">
+        </div>
+      </div>
+
+      <button onclick="addToCart()" class="btn btn-success">Add to Cart</button>
+    </div>
+
+    <div class="section">
+      <h2>Cart</h2>
+      <ul id="cartList" class="list-group mb-3"></ul>
+      <button onclick="generateBill()" class="btn btn-primary">Generate Bill & Image</button>
+    </div>
+
+    <div class="section">
+      <h2>Bill</h2>
+      <div id="billOutput"></div>
+      <button id="downloadBtn" class="btn btn-info mt-3" style="display:none;">Download Bill Image</button>
+    </div>
+  </div>
+
+  <script>
+    const priceList = {
+      "Vellaro T shirt": 1199,
+      "Vellaro Back print": 1699,
+      "Vellaro POLO": 1499,
+      "Vellaro Crop Top": 1099,
+      "Brink T shirt": 899
+    };
+
+    const cart = [];
+
+    function addToCart() {
+      const name = document.getElementById('tshirtName').value;
+      const size = document.getElementById('tshirtSize').value;
+      const color = document.getElementById('tshirtColor').value.trim();
+      const qty = parseInt(document.getElementById('tshirtQty').value);
+
+      if (!color) {
+        alert("Please enter a color!");
+        return;
+      }
+
+      const pricePerItem = priceList[name];
+      const totalItemPrice = pricePerItem * qty;
+
+      cart.push({ name, size, color, qty });
+
+      const cartList = document.getElementById('cartList');
+      const item = document.createElement('li');
+      item.className = 'list-group-item';
+      item.textContent = `${name} | Size: ${size} | Color: ${color} | Qty: ${qty} | Rs.${totalItemPrice}`;
+      cartList.appendChild(item);
+
+      document.getElementById('tshirtColor').value = '';
+      document.getElementById('tshirtQty').value = 1;
+    }
+
+    function generateBill() {
+      if (cart.length === 0) {
+        alert("Cart is empty! Add items first.");
+        return;
+      }
+
+      let subtotal = 0;
+
+      let billDetails = `
+        <div class="brand-header">VELLARO</div>
+        <div class="brand-sub">Order Summary</div>
+        <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Item</th>
+              <th>Details</th>
+              <th>Qty</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      cart.forEach((item, index) => {
+        const price = priceList[item.name] * item.qty;
+        subtotal += price;
+        billDetails += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${item.name}</td>
+            <td>Size: ${item.size}<br>Color: ${item.color}</td>
+            <td>${item.qty}</td>
+            <td>Rs.${price}</td>
+          </tr>
+        `;
+      });
+
+      billDetails += `</tbody></table></div>`;
+
+      const deliveryCharge = 350;
+      const total = subtotal + deliveryCharge;
+
+      billDetails += `
+        <p class="totals"><strong>Subtotal:</strong> Rs.${subtotal}</p>
+        <p class="totals"><strong>Delivery Charge:</strong> Rs.${deliveryCharge}</p>
+        <p class="total-amount">TOTAL: Rs.${total}</p>
+        <div class="thank-you">
+          <p><strong>Thank you so much for your order and for sharing your details!</strong></p>
+          <p>We truly appreciate your support and can’t wait for you to receive your VELLARO T-shirt 🖤</p>
+          <p>Your order will be delivered within 2–3 days. If you need any help, just message us anytime.</p>
+          <p>Have a wonderful day!</p>
+          <p>— VELLARO</p>
+        </div>
+      `;
+
+      document.getElementById('billOutput').innerHTML = billDetails;
+
+      document.getElementById('downloadBtn').style.display = 'inline-block';
+
+      document.getElementById('downloadBtn').onclick = function () {
+        html2canvas(document.querySelector("#billOutput")).then(canvas => {
+          let link = document.createElement('a');
+          link.download = 'vellaro_tshirt_bill.png';
+          link.href = canvas.toDataURL();
+          link.click();
+        });
+      };
+    }
+  </script>
+</body>
+
+</html>
