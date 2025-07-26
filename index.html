@@ -38,8 +38,7 @@
       border-radius: 8px;
       background: #fff;
       width: 100%;
-      max-width: 400px;
-      /* ✅ Mobile-friendly width */
+      max-width: 500px;
       margin: auto;
       box-sizing: border-box;
     }
@@ -48,7 +47,6 @@
       text-align: center;
       font-weight: bold;
       font-size: 1.3rem;
-      /* smaller for phones */
       margin-bottom: 5px;
     }
 
@@ -57,6 +55,17 @@
       font-size: 0.9rem;
       color: #555;
       margin-bottom: 15px;
+    }
+
+    .customer-info {
+      margin: 15px 0;
+      padding: 10px;
+      background: #f8f9fa;
+      border-radius: 5px;
+    }
+
+    .customer-info p {
+      margin: 5px 0;
     }
 
     .thank-you {
@@ -104,6 +113,49 @@
 <body>
   <div class="container">
     <h1>VELLARO T-Shirt Billing Bot</h1>
+
+    <div class="section">
+      <h2>Customer Details</h2>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="customerId" class="form-label">Customer ID:</label>
+          <input type="text" id="customerId" class="form-control" placeholder="Enter customer ID">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="customerName" class="form-label">Customer Name:</label>
+          <input type="text" id="customerName" class="form-control" placeholder="Enter customer name" required>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="customerAddress" class="form-label">Address:</label>
+        <textarea id="customerAddress" class="form-control" rows="2" placeholder="Enter full address" required></textarea>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="customerContact1" class="form-label">Contact Number 1:</label>
+          <input type="tel" id="customerContact1" class="form-control" placeholder="Primary contact" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="customerContact2" class="form-label">Contact Number 2 (Optional):</label>
+          <input type="tel" id="customerContact2" class="form-control" placeholder="Secondary contact">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Payment Method:</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="paymentMethod" id="codMethod" value="COD" checked>
+          <label class="form-check-label" for="codMethod">
+            Cash on Delivery (COD)
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="paymentMethod" id="bankMethod" value="Bank Transfer">
+          <label class="form-check-label" for="bankMethod">
+            Bank Transfer
+          </label>
+        </div>
+      </div>
+    </div>
 
     <div class="section">
       <h2>Add T-Shirt</h2>
@@ -205,11 +257,34 @@
         return;
       }
 
+      // Validate customer details
+      const customerName = document.getElementById('customerName').value.trim();
+      const customerAddress = document.getElementById('customerAddress').value.trim();
+      const customerContact1 = document.getElementById('customerContact1').value.trim();
+      
+      if (!customerName || !customerAddress || !customerContact1) {
+        alert("Please fill in all required customer details!");
+        return;
+      }
+
+      const customerId = document.getElementById('customerId').value.trim();
+      const customerContact2 = document.getElementById('customerContact2').value.trim();
+      const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+
       let subtotal = 0;
 
       let billDetails = `
         <div class="brand-header">VELLARO</div>
         <div class="brand-sub">Order Summary</div>
+        
+        <div class="customer-info">
+          ${customerId ? `<p><strong>Customer ID:</strong> ${customerId}</p>` : ''}
+          <p><strong>Name:</strong> ${customerName}</p>
+          <p><strong>Address:</strong> ${customerAddress}</p>
+          <p><strong>Contact:</strong> ${customerContact1}${customerContact2 ? `, ${customerContact2}` : ''}</p>
+          <p><strong>Payment Method:</strong> ${paymentMethod}</p>
+        </div>
+        
         <div class="table-responsive">
         <table class="table table-bordered">
           <thead class="table-light">
@@ -249,7 +324,7 @@
         <p class="total-amount">TOTAL: Rs.${total}</p>
         <div class="thank-you">
           <p><strong>Thank you so much for your order and for sharing your details!</strong></p>
-          <p>We truly appreciate your support and can’t wait for you to receive your VELLARO T-shirt 🖤</p>
+          <p>We truly appreciate your support and can't wait for you to receive your VELLARO T-shirt 🖤</p>
           <p>Your order will be delivered within 2–3 days. If you need any help, just message us anytime.</p>
           <p>Have a wonderful day!</p>
           <p>— VELLARO</p>
