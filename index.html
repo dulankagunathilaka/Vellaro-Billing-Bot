@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <title>VELLARO T-Shirt Billing Bot</title>
@@ -13,99 +12,23 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <style>
-    body {
-      background: #f4f4f9;
-      font-family: 'Segoe UI', Arial, sans-serif;
-    }
-
-    h1 {
-      text-align: center;
-      margin: 30px 0;
-      letter-spacing: 2px;
-    }
-
-    .section {
-      background: #fff;
-      border-radius: 8px;
-      padding: 30px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      margin-bottom: 30px;
-    }
-
-    #billOutput {
-      border: 2px solid #333;
-      padding: 20px;
-      border-radius: 8px;
-      background: #fff;
-      width: 100%;
-      max-width: 500px;
-      margin: auto;
-      box-sizing: border-box;
-    }
-
-    .brand-header {
-      text-align: center;
-      font-weight: bold;
-      font-size: 1.3rem;
-      margin-bottom: 5px;
-    }
-
-    .brand-sub {
-      text-align: center;
-      font-size: 0.9rem;
-      color: #555;
-      margin-bottom: 15px;
-    }
-
-    .customer-info {
-      margin: 15px 0;
-      padding: 10px;
-      background: #f8f9fa;
-      border-radius: 5px;
-    }
-
-    .customer-info p {
-      margin: 5px 0;
-    }
-
-    .thank-you {
-      margin-top: 20px;
-      padding-top: 15px;
-      border-top: 1px dashed #aaa;
-      text-align: center;
-      font-size: 0.9rem;
-    }
-
-    .totals,
-    .total-amount {
-      text-align: end;
-    }
-
-    .total-amount {
-      font-size: 1.1rem;
-      font-weight: bold;
-    }
-
-    table th,
-    table td {
-      vertical-align: middle !important;
-    }
-
+    body { background: #f4f4f9; font-family: 'Segoe UI', Arial, sans-serif; }
+    h1 { text-align: center; margin: 30px 0; letter-spacing: 2px; }
+    .section { background: #fff; border-radius: 8px; padding: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 30px; }
+    #billOutput { border: 2px solid #333; padding: 20px; border-radius: 8px; background: #fff; width: 100%; max-width: 700px; margin: auto; box-sizing: border-box; }
+    .brand-header { text-align: center; font-weight: bold; font-size: 1.3rem; margin-bottom: 5px; }
+    .brand-sub { text-align: center; font-size: 0.9rem; color: #555; margin-bottom: 15px; }
+    .customer-info { margin: 15px 0; padding: 10px; background: #f8f9fa; border-radius: 5px; }
+    .customer-info p { margin: 5px 0; }
+    .thank-you { margin-top: 20px; padding-top: 15px; border-top: 1px dashed #aaa; text-align: center; font-size: 0.9rem; }
+    .totals, .total-amount { text-align: end; }
+    .total-amount { font-size: 1.1rem; font-weight: bold; }
+    table th, table td { vertical-align: middle !important; }
+    .delete-btn, .edit-btn { float: right; margin-left: 5px; }
     @media print {
-      body * {
-        visibility: hidden;
-      }
-
-      #billOutput,
-      #billOutput * {
-        visibility: visible;
-      }
-
-      #billOutput {
-        position: absolute;
-        left: 0;
-        top: 0;
-      }
+      body * { visibility: hidden; }
+      #billOutput, #billOutput * { visibility: visible; }
+      #billOutput { position: absolute; left: 0; top: 0; }
     }
   </style>
 </head>
@@ -114,6 +37,7 @@
   <div class="container">
     <h1>VELLARO T-Shirt Billing Bot</h1>
 
+    <!-- Customer Section -->
     <div class="section">
       <h2>Customer Details</h2>
       <div class="row">
@@ -144,37 +68,58 @@
         <label class="form-label">Payment Method:</label>
         <div class="form-check">
           <input class="form-check-input" type="radio" name="paymentMethod" id="codMethod" value="COD" checked>
-          <label class="form-check-label" for="codMethod">
-            Cash on Delivery (COD)
-          </label>
+          <label class="form-check-label" for="codMethod">Cash on Delivery (COD)</label>
         </div>
         <div class="form-check">
           <input class="form-check-input" type="radio" name="paymentMethod" id="bankMethod" value="Bank Transfer">
-          <label class="form-check-label" for="bankMethod">
-            Bank Transfer
-          </label>
+          <label class="form-check-label" for="bankMethod">Bank Transfer</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="deliveryCharge" class="form-label">Delivery Charge (Rs.):</label>
+          <input type="number" id="deliveryCharge" class="form-control" placeholder="Enter delivery charge" value="0" min="0">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Delivery Option:</label>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="deliveryOption" id="paidDelivery" value="paid" checked>
+            <label class="form-check-label" for="paidDelivery">Paid Delivery</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="deliveryOption" id="freeDelivery" value="free">
+            <label class="form-check-label" for="freeDelivery">Free Delivery</label>
+          </div>
         </div>
       </div>
     </div>
 
+    <!-- T-Shirt Section -->
     <div class="section">
-      <h2>Add T-Shirt</h2>
+      <h2>Add / Edit T-Shirt</h2>
       <div class="mb-3">
         <label for="tshirtName" class="form-label">T-shirt Name:</label>
-        <select class="form-select" id="tshirtName">
-          <option value="Vellaro T shirt New">Vellaro T shirt New (Rs.1350)</option>
-          <option value="Vellaro T shirt">Vellaro T shirt (Rs.1199)</option>
-          <option value="POLO New">POLO T shirt New (Rs.1599)</option>
-          <option value="POLO">POLO T shirt (Rs.1499)</option>
-          <option value="Vellaro Crop Top New">Vellaro Crop Top New(Rs.1250)</option>
-          <option value="Vellaro Crop Top">Vellaro Crop Top (Rs.1099)</option>
-          <option value="Vellaro Back print">Vellaro Back print (Rs.1699)</option>
-          <option value="Brink T shirt">Brink T shirt (Rs.899)</option>
+        <select class="form-select" id="tshirtName" onchange="toggleCustomName()">
+          <option value="VELLARO 1.0 T shirt">VELLARO 1.0 T shirt</option>
+          <option value="VELLARO 1.1 T shirt">VELLARO 1.1 T shirt</option>
+          <option value="VELLARO POLO Limited Edition T shirt">VELLARO POLO Limited Edition T shirt</option>
+          <option value="VELLARO Back Print T shirt">VELLARO Back Print T shirt</option>
+          <option value="VELLARO Stitch Print Limited Edition T shirt">VELLARO Stitch Print Limited Edition T shirt</option>
+          <option value="VELLARO Crop Top">VELLARO Crop Top</option>
+          <option value="Brink T shirt">Brink T shirt</option>
+          <option value="VELLARO Front Print Oversized T shirt">VELLARO Front Print Oversized T shirt</option>
+          <option value="custom">Other (Custom)</option>
         </select>
       </div>
 
+      <!-- Custom Name Input -->
+      <div class="mb-3" id="customNameDiv" style="display:none;">
+        <label for="customName" class="form-label">Custom T-shirt Name:</label>
+        <input type="text" id="customName" class="form-control" placeholder="Enter custom T-shirt name">
+      </div>
+
       <div class="row">
-        <div class="col-md-4 mb-3">
+        <div class="col-md-2 mb-3">
           <label for="tshirtSize" class="form-label">Size:</label>
           <select class="form-select" id="tshirtSize">
             <option value="S">S</option>
@@ -185,25 +130,35 @@
             <option value="XXXL">XXXL</option>
           </select>
         </div>
-        <div class="col-md-4 mb-3">
+        <div class="col-md-2 mb-3">
           <label for="tshirtColor" class="form-label">Color:</label>
           <input type="text" id="tshirtColor" placeholder="e.g., Black" class="form-control">
         </div>
-        <div class="col-md-4 mb-3">
+        <div class="col-md-2 mb-3">
           <label for="tshirtQty" class="form-label">Quantity:</label>
           <input type="number" id="tshirtQty" value="1" min="1" class="form-control">
         </div>
+        <div class="col-md-3 mb-3">
+          <label for="tshirtPrice" class="form-label">Price (Rs.):</label>
+          <input type="number" id="tshirtPrice" placeholder="Enter price" class="form-control" min="1" required>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="tshirtDiscount" class="form-label">Discount per Item (Rs.):</label>
+          <input type="number" id="tshirtDiscount" value="0" min="0" class="form-control">
+        </div>
       </div>
-
-      <button onclick="addToCart()" class="btn btn-success">Add to Cart</button>
+      <button id="addBtn" onclick="addToCart()" class="btn btn-success">Add to Cart</button>
+      <button id="updateBtn" onclick="updateCartItem()" class="btn btn-warning" style="display:none;">Update Item</button>
     </div>
 
+    <!-- Cart Section -->
     <div class="section">
       <h2>Cart</h2>
       <ul id="cartList" class="list-group mb-3"></ul>
       <button onclick="generateBill()" class="btn btn-primary">Generate Bill & Image</button>
     </div>
 
+    <!-- Bill Section -->
     <div class="section">
       <h2>Bill</h2>
       <div id="billOutput"></div>
@@ -212,71 +167,141 @@
   </div>
 
   <script>
-    const priceList = {
-      "Vellaro T shirt New":1350,
-      "Vellaro T shirt": 1199,
-      "POLO New":1599,
-      "POLO": 1499,
-      "Vellaro Crop Top New":1250,
-      "Vellaro Crop Top": 1099,
-      "Vellaro Back print": 1699,
-      "Brink T shirt": 899
-    };
+    let cart = [];
+    let editIndex = -1;
 
-    const cart = [];
+    function toggleCustomName() {
+      const tshirtSelect = document.getElementById('tshirtName');
+      const customDiv = document.getElementById('customNameDiv');
+      customDiv.style.display = tshirtSelect.value === "custom" ? "block" : "none";
+    }
+
+    function clearForm() {
+      document.getElementById('tshirtName').value = 'VELLARO 1.0 T shirt';
+      document.getElementById('customName').value = '';
+      document.getElementById('tshirtColor').value = '';
+      document.getElementById('tshirtQty').value = 1;
+      document.getElementById('tshirtPrice').value = '';
+      document.getElementById('tshirtDiscount').value = 0;
+      document.getElementById('tshirtSize').value = 'S';
+      toggleCustomName();
+    }
 
     function addToCart() {
-      const name = document.getElementById('tshirtName').value;
+      const tshirtSelect = document.getElementById('tshirtName').value;
+      const name = (tshirtSelect === "custom") ? document.getElementById('customName').value.trim() : tshirtSelect;
       const size = document.getElementById('tshirtSize').value;
       const color = document.getElementById('tshirtColor').value.trim();
       const qty = parseInt(document.getElementById('tshirtQty').value);
+      const pricePerItem = parseInt(document.getElementById('tshirtPrice').value);
+      const discount = parseInt(document.getElementById('tshirtDiscount').value) || 0;
 
-      if (!color) {
-        alert("Please enter a color!");
+      if (!name || !color || !pricePerItem || discount >= pricePerItem) {
+        alert("Please fill valid product details!");
         return;
       }
 
-      const pricePerItem = priceList[name];
-      const totalItemPrice = pricePerItem * qty;
-
-      cart.push({ name, size, color, qty });
-
-      const cartList = document.getElementById('cartList');
-      const item = document.createElement('li');
-      item.className = 'list-group-item';
-      item.textContent = `${name} | Size: ${size} | Color: ${color} | Qty: ${qty} | Rs.${totalItemPrice}`;
-      cartList.appendChild(item);
-
-      document.getElementById('tshirtColor').value = '';
-      document.getElementById('tshirtQty').value = 1;
+      cart.push({ name, size, color, qty, pricePerItem, discount });
+      renderCart();
+      clearForm();
     }
 
-    function generateBill() {
-      if (cart.length === 0) {
-        alert("Cart is empty! Add items first.");
+    function renderCart() {
+      const cartList = document.getElementById('cartList');
+      cartList.innerHTML = '';
+
+      cart.forEach((item, i) => {
+        const totalItemPrice = (item.pricePerItem - item.discount) * item.qty;
+        const li = document.createElement('li');
+        li.className = 'list-group-item';
+        li.innerHTML = `
+          ${item.name} | Size: ${item.size} | Color: ${item.color} | Qty: ${item.qty} | Rs.${totalItemPrice}
+          <button class="btn btn-sm btn-danger delete-btn" onclick="deleteCartItem(${i})">Delete</button>
+          <button class="btn btn-sm btn-secondary edit-btn" onclick="editCartItem(${i})">Edit</button>
+        `;
+        cartList.appendChild(li);
+      });
+    }
+
+    function deleteCartItem(index) {
+      cart.splice(index, 1);
+      renderCart();
+    }
+
+    function editCartItem(index) {
+      const item = cart[index];
+      editIndex = index;
+
+      // Populate fields
+      const tshirtSelect = document.getElementById('tshirtName');
+      const customDiv = document.getElementById('customNameDiv');
+      if (["VELLARO 1.0 T shirt", "VELLARO 1.1 T shirt", "VELLARO POLO Limited Edition T shirt", "VELLARO Back Print T shirt", "VELLARO Stitch Print Limited Edition T shirt", "VELLARO Crop Top", "Brink T shirt", "VELLARO Front Print Oversized T shirt"].includes(item.name)) {
+        tshirtSelect.value = item.name;
+        customDiv.style.display = "none";
+      } else {
+        tshirtSelect.value = "custom";
+        customDiv.style.display = "block";
+        document.getElementById('customName').value = item.name;
+      }
+
+      document.getElementById('tshirtSize').value = item.size;
+      document.getElementById('tshirtColor').value = item.color;
+      document.getElementById('tshirtQty').value = item.qty;
+      document.getElementById('tshirtPrice').value = item.pricePerItem;
+      document.getElementById('tshirtDiscount').value = item.discount;
+
+      document.getElementById('addBtn').style.display = 'none';
+      document.getElementById('updateBtn').style.display = 'inline-block';
+    }
+
+    function updateCartItem() {
+      if (editIndex < 0) return;
+
+      const tshirtSelect = document.getElementById('tshirtName').value;
+      const name = (tshirtSelect === "custom") ? document.getElementById('customName').value.trim() : tshirtSelect;
+      const size = document.getElementById('tshirtSize').value;
+      const color = document.getElementById('tshirtColor').value.trim();
+      const qty = parseInt(document.getElementById('tshirtQty').value);
+      const pricePerItem = parseInt(document.getElementById('tshirtPrice').value);
+      const discount = parseInt(document.getElementById('tshirtDiscount').value) || 0;
+
+      if (!name || !color || !pricePerItem || discount >= pricePerItem) {
+        alert("Please fill valid product details!");
         return;
       }
 
-      // Validate customer details
+      cart[editIndex] = { name, size, color, qty, pricePerItem, discount };
+      renderCart();
+      clearForm();
+      editIndex = -1;
+      document.getElementById('addBtn').style.display = 'inline-block';
+      document.getElementById('updateBtn').style.display = 'none';
+    }
+
+    // --- Bill generation (unchanged) ---
+    function generateBill() {
+      if (cart.length === 0) { alert("Cart is empty!"); return; }
+
       const customerName = document.getElementById('customerName').value.trim();
       const customerAddress = document.getElementById('customerAddress').value.trim();
       const customerContact1 = document.getElementById('customerContact1').value.trim();
-      
+
       if (!customerName || !customerAddress || !customerContact1) {
-        alert("Please fill in all required customer details!");
-        return;
+        alert("Please fill in all required customer details!"); return;
       }
 
       const customerId = document.getElementById('customerId').value.trim();
       const customerContact2 = document.getElementById('customerContact2').value.trim();
       const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+      const realDeliveryCharge = parseInt(document.getElementById('deliveryCharge').value) || 0;
+      const deliveryOption = document.querySelector('input[name="deliveryOption"]:checked').value;
+      const deliveryChargeApplied = deliveryOption === "free" ? 0 : realDeliveryCharge;
 
-      let subtotal = 0;
+      let realSubtotal = 0, subtotal = 0, productDiscountTotal = 0;
 
       let billDetails = `
         <div class="brand-header">VELLARO</div>
         <div class="brand-sub">Order Summary</div>
-        
         <div class="customer-info">
           ${customerId ? `<p><strong>Customer ID:</strong> ${customerId}</p>` : ''}
           <p><strong>Name:</strong> ${customerName}</p>
@@ -284,60 +309,62 @@
           <p><strong>Contact:</strong> ${customerContact1}${customerContact2 ? `, ${customerContact2}` : ''}</p>
           <p><strong>Payment Method:</strong> ${paymentMethod}</p>
         </div>
-        
         <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead class="table-light">
-            <tr>
-              <th>#</th>
-              <th>Item</th>
-              <th>Details</th>
-              <th>Qty</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-          <tbody>
+          <table class="table table-bordered">
+            <thead class="table-light">
+              <tr>
+                <th>#</th><th>Item</th><th>Details</th><th>Qty</th><th>Real Price</th><th>Final Price</th>
+              </tr>
+            </thead>
+            <tbody>
       `;
 
-      cart.forEach((item, index) => {
-        const price = priceList[item.name] * item.qty;
-        subtotal += price;
+      cart.forEach((item, i) => {
+        const price = item.pricePerItem * item.qty;
+        const discountAmt = item.discount * item.qty;
+        const totalAfterDiscount = price - discountAmt;
+        realSubtotal += price;
+        subtotal += totalAfterDiscount;
+        productDiscountTotal += discountAmt;
+
         billDetails += `
           <tr>
-            <td>${index + 1}</td>
+            <td>${i + 1}</td>
             <td>${item.name}</td>
-            <td>Size: ${item.size}<br>Color: ${item.color}</td>
+            <td>Size: ${item.size}<br>Color: ${item.color}<br>Discount: Rs.${item.discount} each</td>
             <td>${item.qty}</td>
             <td>Rs.${price}</td>
-          </tr>
-        `;
+            <td>Rs.${totalAfterDiscount}</td>
+          </tr>`;
       });
 
-      billDetails += `</tbody></table></div>`;
-
-      const deliveryCharge = 350;
-      const total = subtotal + deliveryCharge;
+      const deliveryDiscount = realDeliveryCharge - deliveryChargeApplied;
+      const totalDiscount = productDiscountTotal + deliveryDiscount;
+      const total = subtotal + deliveryChargeApplied;
 
       billDetails += `
-        <p class="totals"><strong>Subtotal:</strong> Rs.${subtotal}</p>
-        <p class="totals"><strong>Delivery Charge:</strong> Rs.${deliveryCharge}</p>
-        <p class="total-amount">TOTAL: Rs.${total}</p>
-        <div class="thank-you">
-          <p><strong>Thank you so much for your order and for sharing your details!</strong></p>
-          <p>We truly appreciate your support and can't wait for you to receive your VELLARO T-shirt 🖤</p>
-          <p>Your order will be delivered within 2–3 days. If you need any help, just message us anytime.</p>
-          <p>Have a wonderful day!</p>
-          <p>— VELLARO</p>
-        </div>
+            </tbody></table></div>
+            <p class="totals"><strong>Real Subtotal (Before Discounts):</strong> Rs.${realSubtotal}</p>
+            <p class="totals"><strong>Subtotal (After Product Discounts):</strong> Rs.${subtotal}</p>
+            <p class="totals"><strong>Delivery Charge:</strong>
+              ${deliveryChargeApplied === 0 ? `Free Delivery (Saved Rs.${realDeliveryCharge})` : `Rs.${realDeliveryCharge}`}
+            </p>
+            ${totalDiscount > 0 ? `<p class="totals text-danger"><strong>Total Discounts:</strong> Rs.${totalDiscount}</p>` : ''}
+            <p class="total-amount">TOTAL: Rs.${total}</p>
+            <div class="thank-you">
+              <p><strong>Thank you for your order!</strong></p>
+              <p>We truly appreciate your support and can't wait for you to receive your VELLARO T-shirt 🖤</p>
+              <p>Your order will be delivered within 2–3 days. If you need any help, just message us anytime.</p>
+              <p>— VELLARO</p>
+            </div>
       `;
 
       document.getElementById('billOutput').innerHTML = billDetails;
-
       document.getElementById('downloadBtn').style.display = 'inline-block';
 
       document.getElementById('downloadBtn').onclick = function () {
         html2canvas(document.querySelector("#billOutput")).then(canvas => {
-          let link = document.createElement('a');
+          const link = document.createElement('a');
           link.download = 'vellaro_tshirt_bill.png';
           link.href = canvas.toDataURL();
           link.click();
@@ -346,5 +373,4 @@
     }
   </script>
 </body>
-
 </html>
