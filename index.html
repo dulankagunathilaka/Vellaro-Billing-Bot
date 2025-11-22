@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>VELLARO T-Shirt Billing Bot</title>
@@ -12,23 +13,113 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <style>
-    body { background: #f4f4f9; font-family: 'Segoe UI', Arial, sans-serif; }
-    h1 { text-align: center; margin: 30px 0; letter-spacing: 2px; }
-    .section { background: #fff; border-radius: 8px; padding: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 30px; }
-    #billOutput { border: 2px solid #333; padding: 20px; border-radius: 8px; background: #fff; width: 100%; max-width: 700px; margin: auto; box-sizing: border-box; }
-    .brand-header { text-align: center; font-weight: bold; font-size: 1.3rem; margin-bottom: 5px; }
-    .brand-sub { text-align: center; font-size: 0.9rem; color: #555; margin-bottom: 15px; }
-    .customer-info { margin: 15px 0; padding: 10px; background: #f8f9fa; border-radius: 5px; }
-    .customer-info p { margin: 5px 0; }
-    .thank-you { margin-top: 20px; padding-top: 15px; border-top: 1px dashed #aaa; text-align: center; font-size: 0.9rem; }
-    .totals, .total-amount { text-align: end; }
-    .total-amount { font-size: 1.1rem; font-weight: bold; }
-    table th, table td { vertical-align: middle !important; }
-    .delete-btn, .edit-btn { float: right; margin-left: 5px; }
+    body {
+      background: #f4f4f9;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 30px 0;
+      letter-spacing: 2px;
+    }
+
+    .section {
+      background: #fff;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    #billOutput {
+      border: 2px solid #333;
+      padding: 20px;
+      border-radius: 8px;
+      background: #fff;
+      width: 100%;
+      max-width: 700px;
+      margin: auto;
+      box-sizing: border-box;
+    }
+
+    .brand-header {
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.3rem;
+      margin-bottom: 5px;
+    }
+
+    .brand-sub {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    .customer-info {
+      margin: 15px 0;
+      padding: 10px;
+      background: #f8f9fa;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .customer-info p {
+      margin: 5px 0;
+    }
+
+    .customer-info .contact {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .thank-you {
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px dashed #aaa;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .totals,
+    .total-amount {
+      text-align: end;
+    }
+
+    .total-amount {
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    table th,
+    table td {
+      vertical-align: middle !important;
+    }
+
+    .delete-btn,
+    .edit-btn {
+      float: right;
+      margin-left: 5px;
+    }
+
     @media print {
-      body * { visibility: hidden; }
-      #billOutput, #billOutput * { visibility: visible; }
-      #billOutput { position: absolute; left: 0; top: 0; }
+      body * {
+        visibility: hidden;
+      }
+
+      #billOutput,
+      #billOutput * {
+        visibility: visible;
+      }
+
+      #billOutput {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
     }
   </style>
 </head>
@@ -52,7 +143,8 @@
       </div>
       <div class="mb-3">
         <label for="customerAddress" class="form-label">Address:</label>
-        <textarea id="customerAddress" class="form-control" rows="2" placeholder="Enter full address" required></textarea>
+        <textarea id="customerAddress" class="form-control" rows="2" placeholder="Enter full address"
+          required></textarea>
       </div>
       <div class="row">
         <div class="col-md-6 mb-3">
@@ -78,7 +170,8 @@
       <div class="row">
         <div class="col-md-6 mb-3">
           <label for="deliveryCharge" class="form-label">Delivery Charge (Rs.):</label>
-          <input type="number" id="deliveryCharge" class="form-control" placeholder="Enter delivery charge" value="0" min="0">
+          <input type="number" id="deliveryCharge" class="form-control" placeholder="Enter delivery charge" value="0"
+            min="0">
         </div>
         <div class="col-md-6 mb-3">
           <label class="form-label">Delivery Option:</label>
@@ -104,7 +197,8 @@
           <option value="VELLARO 1.1 T shirt">VELLARO 1.1 T shirt</option>
           <option value="VELLARO POLO Limited Edition T shirt">VELLARO POLO Limited Edition T shirt</option>
           <option value="VELLARO Back Print T shirt">VELLARO Back Print T shirt</option>
-          <option value="VELLARO Stitch Print Limited Edition T shirt">VELLARO Stitch Print Limited Edition T shirt</option>
+          <option value="VELLARO Stitch Print Limited Edition T shirt">VELLARO Stitch Print Limited Edition T shirt
+          </option>
           <option value="VELLARO Crop Top">VELLARO Crop Top</option>
           <option value="Brink T shirt">Brink T shirt</option>
           <option value="VELLARO Front Print Oversized T shirt">VELLARO Front Print Oversized T shirt</option>
@@ -112,7 +206,6 @@
         </select>
       </div>
 
-      <!-- Custom Name Input -->
       <div class="mb-3" id="customNameDiv" style="display:none;">
         <label for="customName" class="form-label">Custom T-shirt Name:</label>
         <input type="text" id="customName" class="form-control" placeholder="Enter custom T-shirt name">
@@ -148,7 +241,8 @@
         </div>
       </div>
       <button id="addBtn" onclick="addToCart()" class="btn btn-success">Add to Cart</button>
-      <button id="updateBtn" onclick="updateCartItem()" class="btn btn-warning" style="display:none;">Update Item</button>
+      <button id="updateBtn" onclick="updateCartItem()" class="btn btn-warning" style="display:none;">Update
+        Item</button>
     </div>
 
     <!-- Cart Section -->
@@ -156,6 +250,32 @@
       <h2>Cart</h2>
       <ul id="cartList" class="list-group mb-3"></ul>
       <button onclick="generateBill()" class="btn btn-primary">Generate Bill & Image</button>
+    </div>
+
+    <!-- Daily Bill History Section -->
+    <div class="section">
+      <h2>Bill History</h2>
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label for="filterDate" class="form-label">Filter by Date:</label>
+          <input type="date" id="filterDate" class="form-control" onchange="smartSearch()">
+        </div>
+        <div class="col-md-3">
+          <label for="filterCustomerId" class="form-label">Filter by Customer ID:</label>
+          <input type="text" id="filterCustomerId" class="form-control" placeholder="Enter customer ID"
+            onkeyup="smartSearch()">
+        </div>
+        <div class="col-md-3">
+          <label for="filterCustomerName" class="form-label">Filter by Customer Name:</label>
+          <input type="text" id="filterCustomerName" class="form-control" placeholder="Enter customer name"
+            onkeyup="smartSearch()">
+        </div>
+        <div class="col-md-3 d-flex align-items-end gap-2">
+          <button class="btn btn-outline-secondary" onclick="resetFilters()">Clear Filters</button>
+        </div>
+      </div>
+      <div id="billHistoryContainer"></div>
+      <ul id="billHistoryList" class="list-group" style="display:none;"></ul>
     </div>
 
     <!-- Bill Section -->
@@ -169,6 +289,11 @@
   <script>
     let cart = [];
     let editIndex = -1;
+    let history = [];
+    let billHistory = [];
+    let currentBillIndex = -1; // for editing bills
+    const HISTORY_KEY = 'vellaro_history_v1';
+    const BILL_HISTORY_KEY = 'vellaro_bill_history_v1';
 
     function toggleCustomName() {
       const tshirtSelect = document.getElementById('tshirtName');
@@ -201,7 +326,9 @@
         return;
       }
 
-      cart.push({ name, size, color, qty, pricePerItem, discount });
+      const item = { name, size, color, qty, pricePerItem, discount };
+      cart.push(item);
+      pushHistory('add', { item });
       renderCart();
       clearForm();
     }
@@ -224,7 +351,8 @@
     }
 
     function deleteCartItem(index) {
-      cart.splice(index, 1);
+      const removed = cart.splice(index, 1)[0];
+      pushHistory('delete', { index, item: removed });
       renderCart();
     }
 
@@ -232,7 +360,6 @@
       const item = cart[index];
       editIndex = index;
 
-      // Populate fields
       const tshirtSelect = document.getElementById('tshirtName');
       const customDiv = document.getElementById('customNameDiv');
       if (["VELLARO 1.0 T shirt", "VELLARO 1.1 T shirt", "VELLARO POLO Limited Edition T shirt", "VELLARO Back Print T shirt", "VELLARO Stitch Print Limited Edition T shirt", "VELLARO Crop Top", "Brink T shirt", "VELLARO Front Print Oversized T shirt"].includes(item.name)) {
@@ -270,7 +397,10 @@
         return;
       }
 
-      cart[editIndex] = { name, size, color, qty, pricePerItem, discount };
+      const before = Object.assign({}, cart[editIndex]);
+      const after = { name, size, color, qty, pricePerItem, discount };
+      cart[editIndex] = after;
+      pushHistory('edit', { index: editIndex, before, after });
       renderCart();
       clearForm();
       editIndex = -1;
@@ -278,7 +408,66 @@
       document.getElementById('updateBtn').style.display = 'none';
     }
 
-    // --- Bill generation (unchanged) ---
+    // History helpers
+    function saveHistory() {
+      try { localStorage.setItem(HISTORY_KEY, JSON.stringify(history)); } catch (e) { console.error('Failed to save history', e); }
+    }
+
+    function loadHistory() {
+      try {
+        const json = localStorage.getItem(HISTORY_KEY);
+        history = json ? JSON.parse(json) : [];
+      } catch (e) {
+        console.error('Failed to load history', e);
+        history = [];
+      }
+    }
+
+    function pushHistory(action, payload) {
+      const entry = { action, time: new Date().toISOString(), payload };
+      history.unshift(entry);
+      // keep history reasonable length (e.g., 500 entries)
+      if (history.length > 500) history = history.slice(0, 500);
+      saveHistory();
+    }
+
+    function getActionHistory() {
+      // Return full history for search/retrieval
+      return history;
+    }
+
+    function searchHistory(action, itemName) {
+      // Search history by action type and/or item name
+      return history.filter(h => {
+        const actionMatch = !action || h.action === action;
+        const itemMatch = !itemName || (h.payload && h.payload.item && h.payload.item.name.toLowerCase().includes(itemName.toLowerCase()));
+        return actionMatch && itemMatch;
+      });
+    }
+
+    function clearHistory() {
+      if (!confirm('Clear all history? This cannot be undone.')) return;
+      history = [];
+      saveHistory();
+    }
+
+    // Function to calculate estimated delivery skipping Sundays
+    function getEstimatedDelivery() {
+      const now = new Date();
+      let deliveryDates = [];
+      let day = new Date(now.getTime() + 24 * 60 * 60 * 1000); // start from next day
+
+      while (deliveryDates.length < 3) { // 3 days delivery window
+        if (day.getDay() !== 0) { // skip Sunday
+          deliveryDates.push(new Date(day));
+        }
+        day.setDate(day.getDate() + 1);
+      }
+
+      const formatDate = d => d.toLocaleDateString('en-GB');
+      return `${formatDate(deliveryDates[0])} - ${formatDate(deliveryDates[deliveryDates.length - 1])}`;
+    }
+
     function generateBill() {
       if (cart.length === 0) { alert("Cart is empty!"); return; }
 
@@ -297,17 +486,31 @@
       const deliveryOption = document.querySelector('input[name="deliveryOption"]:checked').value;
       const deliveryChargeApplied = deliveryOption === "free" ? 0 : realDeliveryCharge;
 
+      const now = new Date();
+      const dateStr = now.toLocaleDateString();
+      const timeStr = now.toLocaleTimeString();
+      const dateISO = now.toISOString().split('T')[0]; // YYYY-MM-DD
+
+      const estDeliveryStr = getEstimatedDelivery();
+
       let realSubtotal = 0, subtotal = 0, productDiscountTotal = 0;
 
       let billDetails = `
         <div class="brand-header">VELLARO</div>
         <div class="brand-sub">Order Summary</div>
         <div class="customer-info">
-          ${customerId ? `<p><strong>Customer ID:</strong> ${customerId}</p>` : ''}
-          <p><strong>Name:</strong> ${customerName}</p>
-          <p><strong>Address:</strong> ${customerAddress}</p>
-          <p><strong>Contact:</strong> ${customerContact1}${customerContact2 ? `, ${customerContact2}` : ''}</p>
-          <p><strong>Payment Method:</strong> ${paymentMethod}</p>
+          <div>
+            ${customerId ? `<p><strong>Customer ID:</strong> ${customerId}</p>` : ''}
+            <p><strong>Name:</strong> ${customerName}</p>
+            <p class="contact"><strong>Contact:</strong> ${customerContact1}${customerContact2 ? `, ${customerContact2}` : ''}</p>
+            <p><strong>Address:</strong> ${customerAddress}</p>
+            <p><strong>Payment Method:</strong> ${paymentMethod}</p>
+            <p><strong>Est. Delivery:</strong> ${estDeliveryStr}</p>
+          </div>
+          <div style="text-align:right;">
+            <p><strong>Date:</strong> ${dateStr}</p>
+            <p><strong>Time:</strong> ${timeStr}</p>
+          </div>
         </div>
         <div class="table-responsive">
           <table class="table table-bordered">
@@ -354,8 +557,8 @@
             <div class="thank-you">
               <p><strong>Thank you for your order!</strong></p>
               <p>We truly appreciate your support and can't wait for you to receive your VELLARO T-shirt 🖤</p>
-              <p>Your order will be delivered within 2–3 days. If you need any help, just message us anytime.</p>
-              <p>— VELLARO</p>
+              <p>Your order will be delivered within 1–4 days. If you need any help, just message us anytime.</p>
+              <p>VELLARO</p>
             </div>
       `;
 
@@ -370,7 +573,301 @@
           link.click();
         });
       };
+
+      // Save bill to history
+      const billEntry = {
+        id: Date.now(),
+        date: dateISO,
+        time: timeStr,
+        customerId: customerId,
+        customerName: customerName,
+        customerAddress: customerAddress,
+        customerContact1: customerContact1,
+        customerContact2: customerContact2,
+        paymentMethod: paymentMethod,
+        deliveryCharge: realDeliveryCharge,
+        deliveryOption: deliveryOption,
+        cart: JSON.parse(JSON.stringify(cart)),
+        totals: {
+          realSubtotal,
+          subtotal,
+          productDiscountTotal,
+          deliveryChargeApplied,
+          totalDiscount: productDiscountTotal + (realDeliveryCharge - deliveryChargeApplied),
+          total: subtotal + deliveryChargeApplied
+        },
+        createdAt: now.toISOString()
+      };
+      pushBillHistory(billEntry);
+    }
+
+    // Initialize
+    window.addEventListener('DOMContentLoaded', () => {
+      loadHistory();
+      loadBillHistory();
+      renderCart();
+    });
+
+    // Bill History functions
+    function saveBillHistory() {
+      try { localStorage.setItem(BILL_HISTORY_KEY, JSON.stringify(billHistory)); } catch (e) { console.error('Failed to save bill history', e); }
+    }
+
+    function loadBillHistory() {
+      try {
+        const json = localStorage.getItem(BILL_HISTORY_KEY);
+        billHistory = json ? JSON.parse(json) : [];
+      } catch (e) {
+        console.error('Failed to load bill history', e);
+        billHistory = [];
+      }
+      smartSearch();
+    }
+
+    function pushBillHistory(billEntry) {
+      billHistory.unshift(billEntry);
+      // keep bill history reasonable (e.g., 1000 bills)
+      if (billHistory.length > 1000) billHistory = billHistory.slice(0, 1000);
+      saveBillHistory();
+      smartSearch();
+    }
+
+    function smartSearch() {
+      const dateFilter = document.getElementById('filterDate')?.value || '';
+      const customerIdFilter = document.getElementById('filterCustomerId')?.value.trim().toLowerCase() || '';
+      const customerNameFilter = document.getElementById('filterCustomerName')?.value.trim().toLowerCase() || '';
+
+      // Check if any filter is active
+      const hasActiveFilter = dateFilter || customerIdFilter || customerNameFilter;
+
+      let filtered = billHistory.filter(bill => {
+        const matchDate = !dateFilter || bill.date === dateFilter;
+        const matchCustId = !customerIdFilter || bill.customerId.toLowerCase().includes(customerIdFilter);
+        const matchCustName = !customerNameFilter || bill.customerName.toLowerCase().includes(customerNameFilter);
+        return matchDate && matchCustId && matchCustName;
+      });
+
+      const container = document.getElementById('billHistoryContainer');
+      const list = document.getElementById('billHistoryList');
+
+      if (!hasActiveFilter) {
+        // No filter: show only latest bill
+        container.innerHTML = '';
+        list.style.display = 'none';
+
+        if (billHistory.length > 0) {
+          const latestBill = billHistory[0];
+          const custIdText = latestBill.customerId ? `ID: ${latestBill.customerId}` : 'No ID';
+          const totalText = `Rs. ${latestBill.totals.total}`;
+
+          container.innerHTML = `
+            <div class="card border-primary mb-3">
+              <div class="card-body">
+                <h5 class="card-title">Latest Bill</h5>
+                <p class="card-text"><strong>${latestBill.date} ${latestBill.time}</strong> | ${latestBill.customerName} (${custIdText}) | ${totalText}</p>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-sm btn-primary" onclick='viewBill(0)'>View</button>
+                  <button class="btn btn-sm btn-warning" onclick='editBillEntry(0)'>Edit</button>
+                  <button class="btn btn-sm btn-danger" onclick='deleteBillEntry(${latestBill.id})'>Delete</button>
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          container.innerHTML = '<div class="alert alert-info">No bills yet. Create one to get started.</div>';
+        }
+      } else {
+        // Filter active: show search results
+        container.innerHTML = '';
+        list.style.display = 'block';
+        list.innerHTML = '';
+
+        if (filtered.length === 0) {
+          const li = document.createElement('li');
+          li.className = 'list-group-item text-muted';
+          li.textContent = 'No bills matching your search.';
+          list.appendChild(li);
+          return;
+        }
+
+        filtered.forEach((bill, i) => {
+          const li = document.createElement('li');
+          li.className = 'list-group-item';
+          const custIdText = bill.customerId ? `ID: ${bill.customerId}` : 'No ID';
+          const totalText = `Rs. ${bill.totals.total}`;
+          const desc = `${bill.date} ${bill.time} | ${bill.customerName} (${custIdText}) | ${totalText}`;
+
+          li.innerHTML = `
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+              <div style="flex:1">${desc}</div>
+              <div style="white-space:nowrap;">
+              <button class="btn btn-sm btn-primary" onclick='viewBill(${i})'>View</button>
+                <button class="btn btn-sm btn-warning" onclick='editBillEntry(${i})'>Edit</button>
+                <button class="btn btn-sm btn-danger" onclick='deleteBillEntry(${bill.id})'>Delete</button>
+              </div>
+            </div>
+          `;
+          list.appendChild(li);
+        });
+      }
+    }
+
+    function viewBill(idx) {
+      const dateFilter = document.getElementById('filterDate')?.value || '';
+      const customerIdFilter = document.getElementById('filterCustomerId')?.value.trim().toLowerCase() || '';
+      const customerNameFilter = document.getElementById('filterCustomerName')?.value.trim().toLowerCase() || '';
+
+      let filtered = billHistory.filter(bill => {
+        const matchDate = !dateFilter || bill.date === dateFilter;
+        const matchCustId = !customerIdFilter || bill.customerId.toLowerCase().includes(customerIdFilter);
+        const matchCustName = !customerNameFilter || bill.customerName.toLowerCase().includes(customerNameFilter);
+        return matchDate && matchCustId && matchCustName;
+      });
+
+      const bill = filtered[idx] || billHistory[idx]; // fallback to original if filter not active
+      if (!bill) return;
+
+      const estDeliveryStr = getEstimatedDelivery();
+      let billDetails = `
+        <div class="brand-header">VELLARO</div>
+        <div class="brand-sub">Order Summary</div>
+        <div class="customer-info">
+          <div>
+            ${bill.customerId ? `<p><strong>Customer ID:</strong> ${bill.customerId}</p>` : ''}
+            <p><strong>Name:</strong> ${bill.customerName}</p>
+            <p class="contact"><strong>Contact:</strong> ${bill.customerContact1}${bill.customerContact2 ? `, ${bill.customerContact2}` : ''}</p>
+            <p><strong>Address:</strong> ${bill.customerAddress}</p>
+            <p><strong>Payment Method:</strong> ${bill.paymentMethod}</p>
+            <p><strong>Est. Delivery:</strong> ${estDeliveryStr}</p>
+          </div>
+          <div style="text-align:right;">
+            <p><strong>Date:</strong> ${bill.date}</p>
+            <p><strong>Time:</strong> ${bill.time}</p>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead class="table-light">
+              <tr>
+                <th>#</th><th>Item</th><th>Details</th><th>Qty</th><th>Real Price</th><th>Final Price</th>
+              </tr>
+            </thead>
+            <tbody>
+      `;
+
+      bill.cart.forEach((item, bidx) => {
+        const price = item.pricePerItem * item.qty;
+        const discountAmt = item.discount * item.qty;
+        const totalAfterDiscount = price - discountAmt;
+        billDetails += `
+          <tr>
+            <td>${bidx + 1}</td>
+            <td>${item.name}</td>
+            <td>Size: ${item.size}<br>Color: ${item.color}<br>Discount: Rs.${item.discount} each</td>
+            <td>${item.qty}</td>
+            <td>Rs.${price}</td>
+            <td>Rs.${totalAfterDiscount}</td>
+          </tr>`;
+      });
+
+      billDetails += `
+            </tbody></table></div>
+            <p class="totals"><strong>Real Subtotal (Before Discounts):</strong> Rs.${bill.totals.realSubtotal}</p>
+            <p class="totals"><strong>Subtotal (After Product Discounts):</strong> Rs.${bill.totals.subtotal}</p>
+            <p class="totals"><strong>Delivery Charge:</strong>
+              ${bill.totals.deliveryChargeApplied === 0 ? `Free Delivery (Saved Rs.${bill.totals.realSubtotal - bill.totals.subtotal - bill.totals.productDiscountTotal})` : `Rs.${bill.totals.realSubtotal - bill.totals.subtotal - bill.totals.productDiscountTotal}`}
+            </p>
+            ${bill.totals.totalDiscount > 0 ? `<p class="totals text-danger"><strong>Total Discounts:</strong> Rs.${bill.totals.totalDiscount}</p>` : ''}
+            <p class="total-amount">TOTAL: Rs.${bill.totals.total}</p>
+            <div class="thank-you">
+              <p><strong>Thank you for your order!</strong></p>
+              <p>We truly appreciate your support and can't wait for you to receive your VELLARO T-shirt 🖤</p>
+              <p>Your order will be delivered within 1–4 days. If you need any help, just message us anytime.</p>
+              <p>VELLARO</p>
+            </div>
+      `;
+
+      document.getElementById('billOutput').innerHTML = billDetails;
+      document.getElementById('downloadBtn').style.display = 'inline-block';
+      document.getElementById('downloadBtn').onclick = function () {
+        html2canvas(document.querySelector("#billOutput")).then(canvas => {
+          const link = document.createElement('a');
+          link.download = `vellaro_bill_${bill.date}.png`;
+          link.href = canvas.toDataURL();
+          link.click();
+        });
+      };
+      window.scrollTo(0, document.getElementById('billOutput').offsetTop - 100);
+    }
+
+    function editBillEntry(idx) {
+      const dateFilter = document.getElementById('filterDate')?.value || '';
+      const customerIdFilter = document.getElementById('filterCustomerId')?.value.trim().toLowerCase() || '';
+      const customerNameFilter = document.getElementById('filterCustomerName')?.value.trim().toLowerCase() || '';
+
+      let filtered = billHistory.filter(bill => {
+        const matchDate = !dateFilter || bill.date === dateFilter;
+        const matchCustId = !customerIdFilter || bill.customerId.toLowerCase().includes(customerIdFilter);
+        const matchCustName = !customerNameFilter || bill.customerName.toLowerCase().includes(customerNameFilter);
+        return matchDate && matchCustId && matchCustName;
+      });
+
+      const bill = filtered[idx] || billHistory[idx]; // fallback to original if filter not active
+      if (!bill) return;
+
+      currentBillIndex = billHistory.findIndex(b => b.id === bill.id);
+
+      document.getElementById('customerId').value = bill.customerId;
+      document.getElementById('customerName').value = bill.customerName;
+      document.getElementById('customerAddress').value = bill.customerAddress;
+      document.getElementById('customerContact1').value = bill.customerContact1;
+      document.getElementById('customerContact2').value = bill.customerContact2 || '';
+      document.querySelector(`input[name="paymentMethod"][value="${bill.paymentMethod}"]`).checked = true;
+      document.getElementById('deliveryCharge').value = bill.totals.realSubtotal - bill.totals.subtotal - bill.totals.productDiscountTotal;
+      document.querySelector(`input[name="deliveryOption"][value="${bill.deliveryOption}"]`).checked = true;
+
+      cart = JSON.parse(JSON.stringify(bill.cart));
+      renderCart();
+
+      alert('Bill loaded for editing. Modify cart items or customer details, then click "Generate Bill & Image" to save changes.');
+      window.scrollTo(0, 0);
+    }
+
+    function deleteBillEntry(billId) {
+      if (!confirm('Are you sure you want to delete this bill? This action cannot be undone.')) return;
+      billHistory = billHistory.filter(b => b.id !== billId);
+      saveBillHistory();
+      filterAndRenderBills();
+    }
+
+    function exportBillHistory() {
+      const dateFilter = document.getElementById('filterDate')?.value || '';
+      const customerIdFilter = document.getElementById('filterCustomerId')?.value.trim().toLowerCase() || '';
+      const customerNameFilter = document.getElementById('filterCustomerName')?.value.trim().toLowerCase() || '';
+
+      let filtered = billHistory.filter(bill => {
+        const matchDate = !dateFilter || bill.date === dateFilter;
+        const matchCustId = !customerIdFilter || bill.customerId.toLowerCase().includes(customerIdFilter);
+        const matchCustName = !customerNameFilter || bill.customerName.toLowerCase().includes(customerNameFilter);
+        return matchDate && matchCustId && matchCustName;
+      });
+
+      const blob = new Blob([JSON.stringify(filtered, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `vellaro_bills_${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function resetFilters() {
+      document.getElementById('filterDate').value = '';
+      document.getElementById('filterCustomerId').value = '';
+      document.getElementById('filterCustomerName').value = '';
+      filterAndRenderBills();
     }
   </script>
 </body>
+
 </html>
