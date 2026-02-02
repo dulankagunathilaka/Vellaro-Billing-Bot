@@ -9,13 +9,17 @@
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
 
+  <!-- Poppins Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+
   <!-- html2canvas for screenshot -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <style>
     body {
       background: #f4f4f9;
-      font-family: 'Segoe UI', Arial, sans-serif;
+      font-family: 'Poppins', sans-serif;
     }
 
     h1 {
@@ -33,65 +37,245 @@
     }
 
     #billOutput {
-      border: 2px solid #333;
-      padding: 20px;
-      border-radius: 8px;
+      border: 3px solid #000;
+      padding: 50px;
+      border-radius: 0;
       background: #fff;
       width: 100%;
-      max-width: 700px;
+      max-width: 850px;
       margin: auto;
       box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.5;
+    }
+
+    .invoice-header {
+      border-bottom: 3px solid #000;
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
     }
 
     .brand-header {
-      text-align: center;
-      font-weight: bold;
-      font-size: 1.3rem;
-      margin-bottom: 5px;
+      text-align: left;
+      font-weight: 900;
+      font-size: 2.8rem;
+      margin-bottom: 8px;
+      letter-spacing: 4px;
+      color: #000;
+      font-family: 'Arial Black', sans-serif;
     }
 
     .brand-sub {
-      text-align: center;
+      text-align: left;
+      font-size: 1.15rem;
+      color: #000;
+      margin-bottom: 0;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .invoice-number {
+      text-align: right;
       font-size: 0.9rem;
-      color: #555;
+    }
+
+    .invoice-number p {
+      margin: 5px 0;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .invoice-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #000;
+      padding-bottom: 20px;
+    }
+
+    .invoice-section h3 {
+      font-size: 0.9rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
       margin-bottom: 15px;
+      border-bottom: 2px solid #000;
+      padding-bottom: 10px;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .invoice-section p {
+      margin: 8px 0;
+      font-size: 1rem;
+      line-height: 1.8;
+      font-weight: 500;
+    }
+
+    .invoice-section .contact {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin: 12px 0;
+      letter-spacing: 0.5px;
+    }
+
+    .invoice-section .phone {
+      font-size: 1.4rem;
+      font-weight: 900;
+      margin: 15px 0;
+      padding: 10px 12px;
+      background: #f0f0f0;
+      border-left: 5px solid #000;
+      display: inline-block;
+      letter-spacing: 0.5px;
     }
 
     .customer-info {
-      margin: 15px 0;
-      padding: 10px;
-      background: #f8f9fa;
-      border-radius: 5px;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      border-radius: 0;
+      display: block;
     }
 
     .customer-info p {
       margin: 5px 0;
+      font-size: 1.05rem;
     }
 
     .customer-info .contact {
       font-size: 1.2rem;
-      font-weight: bold;
+      font-weight: 700;
+      margin: 10px 0;
+    }
+
+    .phone-highlight {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #000;
+      margin: 10px 0;
+      letter-spacing: 2px;
+    }
+
+    .items-table {
+      margin: 20px 0;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    .items-table th {
+      background: #000;
+      color: #fff;
+      padding: 14px 10px;
+      text-align: left;
+      font-size: 0.88rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      border: none;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .items-table td {
+      padding: 14px 10px;
+      border-bottom: 1px solid #ddd;
+      font-size: 0.98rem;
+      font-weight: 500;
+    }
+
+    .items-table tr:last-child td {
+      border-bottom: 2px solid #000;
+    }
+
+    .wholesale-section {
+      margin: 30px 0;
+      padding: 20px;
+      border: 2px solid #000;
+      background: #fafafa;
+    }
+
+    .wholesale-section h4 {
+      font-size: 0.9rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .wholesale-section p {
+      margin: 6px 0;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .totals-section {
+      margin: 35px 0;
+      padding: 25px 0;
+      border-top: 2px solid #000;
+      border-bottom: 3px solid #000;
+    }
+
+    .totals-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 12px 0;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .totals-row.subtotal {
+      font-weight: 700;
+      font-size: 1.02rem;
+    }
+
+    .totals-row.discount {
+      color: #d32f2f;
+      font-weight: 800;
+      font-size: 1.02rem;
+    }
+
+    .totals-row.total-final {
+      font-size: 1.35rem;
+      font-weight: 900;
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 2px solid #000;
+      letter-spacing: 0.5px;
     }
 
     .thank-you {
-      margin-top: 20px;
-      padding-top: 15px;
-      border-top: 1px dashed #aaa;
+      margin-top: 45px;
+      padding: 25px;
+      border: 2.5px solid #000;
       text-align: center;
+      font-size: 0.95rem;
+      background: #fafafa;
+    }
+
+    .thank-you p {
+      margin: 8px 0;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .thank-you p:first-child {
+      font-size: 1.2rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    .thank-you p:last-child {
       font-size: 0.9rem;
-    }
-
-    .totals,
-    .total-amount {
-      text-align: end;
-    }
-
-    .total-amount {
-      font-size: 1.1rem;
-      font-weight: bold;
+      font-weight: 600;
+      margin-top: 15px;
     }
 
     table th,
@@ -225,7 +409,15 @@
         </div>
         <div class="col-md-2 mb-3">
           <label for="tshirtColor" class="form-label">Color:</label>
-          <input type="text" id="tshirtColor" placeholder="e.g., Black" class="form-control">
+          <select class="form-select" id="tshirtColor" onchange="toggleCustomColor()">
+            <option value="Black">Black Design</option>
+            <option value="White">White Design</option>
+            <option value="custom">Other (Custom)</option>
+          </select>
+        </div>
+        <div class="col-md-2 mb-3" id="customColorDiv" style="display:none;">
+          <label for="customColor" class="form-label">Custom Color:</label>
+          <input type="text" id="customColor" class="form-control" placeholder="e.g., Red, Blue">
         </div>
         <div class="col-md-2 mb-3">
           <label for="tshirtQty" class="form-label">Quantity:</label>
@@ -301,22 +493,31 @@
       customDiv.style.display = tshirtSelect.value === "custom" ? "block" : "none";
     }
 
+    function toggleCustomColor() {
+      const colorSelect = document.getElementById('tshirtColor');
+      const customColorDiv = document.getElementById('customColorDiv');
+      customColorDiv.style.display = colorSelect.value === "custom" ? "block" : "none";
+    }
+
     function clearForm() {
       document.getElementById('tshirtName').value = 'VELLARO 1.0 T shirt';
       document.getElementById('customName').value = '';
-      document.getElementById('tshirtColor').value = '';
+      document.getElementById('tshirtColor').value = 'Black';
+      document.getElementById('customColor').value = '';
       document.getElementById('tshirtQty').value = 1;
       document.getElementById('tshirtPrice').value = '';
       document.getElementById('tshirtDiscount').value = 0;
       document.getElementById('tshirtSize').value = 'S';
       toggleCustomName();
+      toggleCustomColor();
     }
 
     function addToCart() {
       const tshirtSelect = document.getElementById('tshirtName').value;
       const name = (tshirtSelect === "custom") ? document.getElementById('customName').value.trim() : tshirtSelect;
       const size = document.getElementById('tshirtSize').value;
-      const color = document.getElementById('tshirtColor').value.trim();
+      const colorSelect = document.getElementById('tshirtColor').value;
+      const color = (colorSelect === "custom") ? document.getElementById('customColor').value.trim() : colorSelect;
       const qty = parseInt(document.getElementById('tshirtQty').value);
       const pricePerItem = parseInt(document.getElementById('tshirtPrice').value);
       const discount = parseInt(document.getElementById('tshirtDiscount').value) || 0;
@@ -372,7 +573,19 @@
       }
 
       document.getElementById('tshirtSize').value = item.size;
-      document.getElementById('tshirtColor').value = item.color;
+
+      // Handle color dropdown and custom color
+      const colorSelect = document.getElementById('tshirtColor');
+      if (["Black", "White"].includes(item.color)) {
+        colorSelect.value = item.color;
+        document.getElementById('customColorDiv').style.display = "none";
+        document.getElementById('customColor').value = '';
+      } else {
+        colorSelect.value = "custom";
+        document.getElementById('customColorDiv').style.display = "block";
+        document.getElementById('customColor').value = item.color;
+      }
+
       document.getElementById('tshirtQty').value = item.qty;
       document.getElementById('tshirtPrice').value = item.pricePerItem;
       document.getElementById('tshirtDiscount').value = item.discount;
@@ -387,7 +600,8 @@
       const tshirtSelect = document.getElementById('tshirtName').value;
       const name = (tshirtSelect === "custom") ? document.getElementById('customName').value.trim() : tshirtSelect;
       const size = document.getElementById('tshirtSize').value;
-      const color = document.getElementById('tshirtColor').value.trim();
+      const colorSelect = document.getElementById('tshirtColor').value;
+      const color = (colorSelect === "custom") ? document.getElementById('customColor').value.trim() : colorSelect;
       const qty = parseInt(document.getElementById('tshirtQty').value);
       const pricePerItem = parseInt(document.getElementById('tshirtPrice').value);
       const discount = parseInt(document.getElementById('tshirtDiscount').value) || 0;
@@ -453,11 +667,14 @@
 
     // Function to calculate estimated delivery skipping Sundays
     function getEstimatedDelivery() {
+      const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+      const deliveryDays = paymentMethod === "Bank Transfer" ? 3 : 5; // 3 days for Bank Transfer, 5 days for COD
+
       const now = new Date();
       let deliveryDates = [];
       let day = new Date(now.getTime() + 24 * 60 * 60 * 1000); // start from next day
 
-      while (deliveryDates.length < 3) { // 3 days delivery window
+      while (deliveryDates.length < deliveryDays) {
         if (day.getDay() !== 0) { // skip Sunday
           deliveryDates.push(new Date(day));
         }
@@ -496,30 +713,47 @@
       let realSubtotal = 0, subtotal = 0, productDiscountTotal = 0;
 
       let billDetails = `
-        <div class="brand-header">VELLARO</div>
-        <div class="brand-sub">Order Summary</div>
-        <div class="customer-info">
+        <div class="invoice-header">
           <div>
-            ${customerId ? `<p><strong>Customer ID:</strong> ${customerId}</p>` : ''}
-            <p><strong>Name:</strong> ${customerName}</p>
-            <p class="contact"><strong>Contact:</strong> ${customerContact1}${customerContact2 ? `, ${customerContact2}` : ''}</p>
-            <p><strong>Address:</strong> ${customerAddress}</p>
-            <p><strong>Payment Method:</strong> ${paymentMethod}</p>
-            <p><strong>Est. Delivery:</strong> ${estDeliveryStr}</p>
+            <div class="brand-header">VELLARO</div>
+            <div class="brand-sub">INVOICE</div>
           </div>
-          <div style="text-align:right;">
-            <p><strong>Date:</strong> ${dateStr}</p>
-            <p><strong>Time:</strong> ${timeStr}</p>
+          <div class="invoice-number">
+            <p>INVOICE #${Date.now()}</p>
+            <p>Date: ${dateStr}</p>
+            <p>Time: ${timeStr}</p>
           </div>
         </div>
-        <div class="table-responsive">
-          <table class="table table-bordered">
-            <thead class="table-light">
-              <tr>
-                <th>#</th><th>Item</th><th>Details</th><th>Qty</th><th>Real Price</th><th>Final Price</th>
-              </tr>
-            </thead>
-            <tbody>
+        
+        <div class="invoice-details">
+          <div class="invoice-section">
+            <h3>Bill To</h3>
+            <p class="contact"><strong>${customerName}</strong></p>
+            <p>${customerAddress}</p>
+            <p class="phone-highlight"><strong>Phone: ${customerContact1}</strong>${customerContact2 ? `<br><strong>Phone: ${customerContact2}</strong>` : ''}</p>
+          </div>
+          <div class="invoice-section">
+            <h3>Order Details</h3>
+            ${customerId ? `<p><strong>Customer ID:</strong> ${customerId}</p>` : ''}
+            <p><strong>Payment Method:</strong> ${paymentMethod}</p>
+            <p><strong>Est. Delivery:</strong> ${estDeliveryStr}</p>
+            <p><strong>Status:</strong> Confirmed</p>
+          </div>
+        </div>
+
+        <table class="items-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Size</th>
+              <th>Color</th>
+              <th>Qty</th>
+              <th>Unit Price</th>
+              <th>Discount</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
       `;
 
       cart.forEach((item, i) => {
@@ -532,12 +766,13 @@
 
         billDetails += `
           <tr>
-            <td>${i + 1}</td>
             <td>${item.name}</td>
-            <td>Size: ${item.size}<br>Color: ${item.color}<br>Discount: Rs.${item.discount} each</td>
+            <td>${item.size}</td>
+            <td>${item.color}</td>
             <td>${item.qty}</td>
-            <td>Rs.${price}</td>
-            <td>Rs.${totalAfterDiscount}</td>
+            <td>Rs.${item.pricePerItem}</td>
+            <td>-Rs.${discountAmt}</td>
+            <td><strong>Rs.${totalAfterDiscount}</strong></td>
           </tr>`;
       });
 
@@ -546,20 +781,30 @@
       const total = subtotal + deliveryChargeApplied;
 
       billDetails += `
-            </tbody></table></div>
-            <p class="totals"><strong>Real Subtotal (Before Discounts):</strong> Rs.${realSubtotal}</p>
-            <p class="totals"><strong>Subtotal (After Product Discounts):</strong> Rs.${subtotal}</p>
-            <p class="totals"><strong>Delivery Charge:</strong>
-              ${deliveryChargeApplied === 0 ? `Free Delivery (Saved Rs.${realDeliveryCharge})` : `Rs.${realDeliveryCharge}`}
-            </p>
-            ${totalDiscount > 0 ? `<p class="totals text-danger"><strong>Total Discounts:</strong> Rs.${totalDiscount}</p>` : ''}
-            <p class="total-amount">TOTAL: Rs.${total}</p>
-            <div class="thank-you">
-              <p><strong>Thank you for your order!</strong></p>
-              <p>We truly appreciate your support and can't wait for you to receive your VELLARO T-shirt 🖤</p>
-              <p>Your order will be delivered within 1–4 days. If you need any help, just message us anytime.</p>
-              <p>VELLARO</p>
-            </div>
+          </tbody>
+        </table>
+
+        <div class="totals-section">
+          <div class="totals-row subtotal">
+            <span>Subtotal (After Product Discounts)</span>
+            <span>Rs.${subtotal}</span>
+          </div>
+          ${totalDiscount > 0 ? `<div class="totals-row discount"><span>Total Discounts</span><span>-Rs.${totalDiscount}</span></div>` : ''}
+          <div class="totals-row">
+            <span><strong>Delivery Charge</strong></span>
+            <span>${deliveryChargeApplied === 0 ? `<strong>FREE (Saved Rs.${realDeliveryCharge})</strong>` : `Rs.${realDeliveryCharge}`}</span>
+          </div>
+          <div class="totals-row total-final">
+            <span>TOTAL AMOUNT DUE</span>
+            <span>Rs.${total}</span>
+          </div>
+        </div>
+
+        <div class="thank-you">
+          <p>Thank You for Your Order</p>
+          <p>We appreciate your business and look forward to serving you again!</p>
+          <p style="margin-top: 10px; font-size: 0.85rem;">VELLARO | Premium T-Shirts</p>
+        </div>
       `;
 
       document.getElementById('billOutput').innerHTML = billDetails;
@@ -729,30 +974,47 @@
 
       const estDeliveryStr = getEstimatedDelivery();
       let billDetails = `
-        <div class="brand-header">VELLARO</div>
-        <div class="brand-sub">Order Summary</div>
-        <div class="customer-info">
+        <div class="invoice-header">
           <div>
-            ${bill.customerId ? `<p><strong>Customer ID:</strong> ${bill.customerId}</p>` : ''}
-            <p><strong>Name:</strong> ${bill.customerName}</p>
-            <p class="contact"><strong>Contact:</strong> ${bill.customerContact1}${bill.customerContact2 ? `, ${bill.customerContact2}` : ''}</p>
-            <p><strong>Address:</strong> ${bill.customerAddress}</p>
-            <p><strong>Payment Method:</strong> ${bill.paymentMethod}</p>
-            <p><strong>Est. Delivery:</strong> ${estDeliveryStr}</p>
+            <div class="brand-header">VELLARO</div>
+            <div class="brand-sub">INVOICE</div>
           </div>
-          <div style="text-align:right;">
-            <p><strong>Date:</strong> ${bill.date}</p>
-            <p><strong>Time:</strong> ${bill.time}</p>
+          <div class="invoice-number">
+            <p>INVOICE #${bill.id}</p>
+            <p>Date: ${bill.date}</p>
+            <p>Time: ${bill.time}</p>
           </div>
         </div>
-        <div class="table-responsive">
-          <table class="table table-bordered">
-            <thead class="table-light">
-              <tr>
-                <th>#</th><th>Item</th><th>Details</th><th>Qty</th><th>Real Price</th><th>Final Price</th>
-              </tr>
-            </thead>
-            <tbody>
+        
+        <div class="invoice-details">
+          <div class="invoice-section">
+            <h3>Bill To</h3>
+            <p class="contact"><strong>${bill.customerName}</strong></p>
+            <p>${bill.customerAddress}</p>
+            <p class="phone-highlight"><strong>Phone: ${bill.customerContact1}</strong>${bill.customerContact2 ? `<br><strong>Phone: ${bill.customerContact2}</strong>` : ''}</p>
+          </div>
+          <div class="invoice-section">
+            <h3>Order Details</h3>
+            ${bill.customerId ? `<p><strong>Customer ID:</strong> ${bill.customerId}</p>` : ''}
+            <p><strong>Payment Method:</strong> ${bill.paymentMethod}</p>
+            <p><strong>Est. Delivery:</strong> ${estDeliveryStr}</p>
+            <p><strong>Status:</strong> Confirmed</p>
+          </div>
+        </div>
+
+        <table class="items-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Size</th>
+              <th>Color</th>
+              <th>Qty</th>
+              <th>Unit Price</th>
+              <th>Discount</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
       `;
 
       bill.cart.forEach((item, bidx) => {
@@ -761,31 +1023,42 @@
         const totalAfterDiscount = price - discountAmt;
         billDetails += `
           <tr>
-            <td>${bidx + 1}</td>
             <td>${item.name}</td>
-            <td>Size: ${item.size}<br>Color: ${item.color}<br>Discount: Rs.${item.discount} each</td>
+            <td>${item.size}</td>
+            <td>${item.color}</td>
             <td>${item.qty}</td>
-            <td>Rs.${price}</td>
-            <td>Rs.${totalAfterDiscount}</td>
+            <td>Rs.${item.pricePerItem}</td>
+            <td>-Rs.${discountAmt}</td>
+            <td><strong>Rs.${totalAfterDiscount}</strong></td>
           </tr>`;
       });
 
       billDetails += `
-            </tbody></table></div>
-            <p class="totals"><strong>Real Subtotal (Before Discounts):</strong> Rs.${bill.totals.realSubtotal}</p>
-            <p class="totals"><strong>Subtotal (After Product Discounts):</strong> Rs.${bill.totals.subtotal}</p>
-            <p class="totals"><strong>Delivery Charge:</strong>
-              ${bill.totals.deliveryChargeApplied === 0 ? `Free Delivery (Saved Rs.${bill.totals.realSubtotal - bill.totals.subtotal - bill.totals.productDiscountTotal})` : `Rs.${bill.totals.realSubtotal - bill.totals.subtotal - bill.totals.productDiscountTotal}`}
-            </p>
-            ${bill.totals.totalDiscount > 0 ? `<p class="totals text-danger"><strong>Total Discounts:</strong> Rs.${bill.totals.totalDiscount}</p>` : ''}
-            <p class="total-amount">TOTAL: Rs.${bill.totals.total}</p>
-            <div class="thank-you">
-              <p><strong>Thank you for your order!</strong></p>
-              <p>We truly appreciate your support and can't wait for you to receive your VELLARO T-shirt 🖤</p>
-              <p>Your order will be delivered within 1–4 days. If you need any help, just message us anytime.</p>
-              <p>VELLARO</p>
-            </div>
-      `;
+          </tbody>
+        </table>
+
+        <div class="totals-section">
+          <div class="totals-row subtotal">
+            <span>Subtotal (After Product Discounts)</span>
+            <span>Rs.${bill.totals.subtotal}</span>
+          </div>
+          ${bill.totals.totalDiscount > 0 ? `<div class="totals-row discount"><span>Total Discounts</span><span>-Rs.${bill.totals.totalDiscount}</span></div>` : ''}
+          <div class="totals-row">
+            <span><strong>Delivery Charge</strong></span>
+            <span>${bill.totals.deliveryChargeApplied === 0 ? `<strong>FREE (Saved Rs.${bill.totals.realSubtotal - bill.totals.subtotal - bill.totals.productDiscountTotal})</strong>` : `Rs.${bill.totals.realSubtotal - bill.totals.subtotal - bill.totals.productDiscountTotal}`}</span>
+          </div>
+          <div class="totals-row total-final">
+            <span>TOTAL AMOUNT DUE</span>
+            <span>Rs.${bill.totals.total}</span>
+          </div>
+        </div>
+
+        <div class="thank-you">
+          <p>Thank You for Your Order</p>
+          <p>We appreciate your business and look forward to serving you again!</p>
+          <p style="margin-top: 10px; font-size: 0.85rem;">VELLARO | Premium T-Shirts</p>
+        </div>
+      `;;
 
       document.getElementById('billOutput').innerHTML = billDetails;
       document.getElementById('downloadBtn').style.display = 'inline-block';
